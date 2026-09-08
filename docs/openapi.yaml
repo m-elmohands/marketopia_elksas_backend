@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: El-Ksas Content API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+paths:
+  /home:
+    get:
+      summary: Get localized homepage content
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200': { description: Homepage content envelope }
+  /motorcycles:
+    get:
+      summary: List published motorcycles
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200': { description: Paginated motorcycles envelope }
+  /motorcycles/{slug}:
+    get:
+      summary: Get a published motorcycle
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200': { description: Motorcycle envelope }
+        '404': { description: Not found }
+  /articles:
+    get:
+      summary: List published articles
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200': { description: Paginated articles envelope }
+  /articles/{slug}:
+    get:
+      summary: Get a published article
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200': { description: Article envelope }
+        '404': { description: Not found }
+components:
+  parameters:
+    Locale: { name: locale, in: query, schema: { type: string, enum: [ar, en], default: ar } }
+    Search: { name: search, in: query, schema: { type: string, maxLength: 100 } }
